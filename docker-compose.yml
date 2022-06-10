@@ -1,0 +1,30 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  pet-project-parser:
+    image: alex/pet-project-parser
+    ports: 
+      - "8080:8080"
+    networks:
+      - pet-project
+  pet-project-backend:
+    image: alex/pet-project-backend
+    ports:
+      - "3010:3010"
+    networks:
+      - pet-project
+    depends_on:
+      - pet-project-parser
+  pet-project-frontend:
+    image: alex/pet-project-frontend
+    stdin_open: true
+    ports:
+      - "3000:3000"
+    networks:
+      - pet-project
+    depends_on:
+      - pet-project-backend
+networks:
+  pet-project:
+    driver: bridge
+volumes:
+  logvolume01: {}
